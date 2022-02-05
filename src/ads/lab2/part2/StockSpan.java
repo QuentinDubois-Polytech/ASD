@@ -1,7 +1,9 @@
-package ads.lab2;
+package ads.lab2.part2;
+
+import ads.lab2.part1.ArrayStack;
+import ads.lab2.part1.EmptyStackException;
 
 import java.util.Arrays;
-import java.util.Stack;
 
 /**
  * A class to provide two implementations
@@ -51,23 +53,23 @@ public class StockSpan {
 	 */
 	public static int[] smart(int[] prices) throws EmptyStackException {
 		int[] span = new int[prices.length];
-		Stack<Integer> stack = new Stack<>();
+		ArrayStack<Integer> stack = new ArrayStack<>();
 
 		span[0] = 1;
 		stack.push(0);
 		for (int i = 1; i < prices.length; i++) {
 			int res = 1;
-			System.out.println(stack);
-			for (int j = i-1; j >= 0; j--) {
-				if (!stack.isEmpty() && prices[stack.peek()] < prices[i]) {
-					res += span[j];
+			for (int j = 0; j <= stack.size(); j++) {
+				if (prices[stack.peek()] < prices[i]) {
+					res += span[stack.peek()];
 					stack.pop();
+				} else {
+					break;
 				}
 			}
 			stack.push(i);
 			span[i] = res;
 		}
-
 		return span;
 	}
 }

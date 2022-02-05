@@ -1,4 +1,4 @@
-package ads.lab2;
+package ads.lab2.part1;
 
 /**
  * A class for stacks supporting the findMin operation in THETA(1)
@@ -77,7 +77,7 @@ public class StackMin<AnyType extends Comparable<AnyType>> {
      * A short main for quick testing
      */
 	public static void main(String[] args) throws EmptyStackException {
-		StackMin<Integer> s = new StackMin<Integer>();
+		StackMin<Integer> s = new StackMin<>();
 		s.push(3); s.push(1); s.push(2);
 		System.out.println(s.findMin());
 		s.pop(); s.pop(); s.push(5);

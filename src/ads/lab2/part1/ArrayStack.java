@@ -1,4 +1,4 @@
-package ads.lab2;
+package ads.lab2.part1;
 
 /**
  * An array-based stack class

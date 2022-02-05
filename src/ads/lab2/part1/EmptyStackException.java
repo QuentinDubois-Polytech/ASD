@@ -1,4 +1,4 @@
-package ads.lab2;
+package ads.lab2.part1;
 
 /**
  * An exception class for empty stack

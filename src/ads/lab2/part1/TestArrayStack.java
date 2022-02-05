@@ -1,4 +1,4 @@
-package ads.lab2;
+package ads.lab2.part1;
 
 import ads.util.TestClass;
 import java.util.Scanner;
