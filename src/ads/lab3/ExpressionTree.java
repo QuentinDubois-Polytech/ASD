@@ -26,15 +26,35 @@ public class ExpressionTree extends BinaryNode<String> {
 	 * Return the value of the expression
 	 */
 	public double eval() throws NumberFormatException {
-        return eval();
+        return eval(this);
 	}
+
+	private double eval(ExpressionTree t) throws NumberFormatException {
+		if (t == null) {
+			return 0;
+		}
+
+		if (t.isLeaf()) {
+			return Double.parseDouble(t.data());
+		}
+
+		return eval(t.data(), eval((ExpressionTree) t.left()), eval((ExpressionTree) t.right()));
+	}
+
 	
 	/**
 	 * Return the value of 'x op y'
 	 * where 'op' is "+", "*", "/" or "^"
 	 */
 	private double eval(String op, double x, double y) {
-		return 0;
+		return switch(op) {
+			case "+" -> x + y;
+			case "-" -> x - y;
+			case "*" -> x * y;
+			case "/" -> x / y;
+			case "^" -> Math.pow(x, y);
+			default -> 0;
+		};
 	}
 	
     ////////////////////////////////////

@@ -7,8 +7,9 @@ import java.util.*;
  */
 public class BinaryNode<AnyType> {
 		
-	private AnyType data;
-	private BinaryNode<AnyType> left, right;
+	private final AnyType data;
+	private final BinaryNode<AnyType> left;
+	private final BinaryNode<AnyType> right;
 
 	//////////////// constructors
 	
@@ -318,8 +319,8 @@ public class BinaryNode<AnyType> {
     	if ( s.equals("$") )
     		return null;
     	if ( s.endsWith("$") )
-    		return new BinaryNode<String>(s.substring(0,s.length()-1));
-    	return new BinaryNode<String>(s,read(input),read(input));
+    		return new BinaryNode<>(s.substring(0,s.length()-1));
+    	return new BinaryNode<>(s,read(input),read(input));
     }
 
     /**
