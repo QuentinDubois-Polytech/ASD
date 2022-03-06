@@ -1,5 +1,6 @@
 package ads.lab2.part3;
 
+import javax.sound.midi.Soundbank;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -16,41 +17,34 @@ public class Pairing {
      * Running time complexity: THETA(S) where S is the size of the input
      * Extra memory usage: O(n)
      */
-//    public static void showPairs(int n, Scanner input) throws EmptyQueueException {
-//        ListQueue<Integer> numbers = new ListQueue<>();
-//        if (input.hasNext()) {
-//            int numberRead = input.nextInt();
-//            int numberPair = numberRead + n;
-//
-//            int i = 0;
-//            while (i++ < n && input.hasNext()) {
-//                int number = input.nextInt();
-//                if (number < numberPair) {
-//                    numbers.enqueue(input.nextInt());
-//                } else {
-//                    if (nu)
-//                }
-//            }
-//
-//            if (numberRead)
-//
-//                if (numbers.contains(numberRead + n)) {
-//                    System.out.println("(" + numberRead + "," + numberRead + n + ")");
-//                }
-//
-//        }
-//
-//
-//    }
+
+    private static void printPairs(int x, int y) {
+        System.out.print("(" + x + "," + y + ") ");
+    }
+
+    public static void showPairs(int n, Scanner input) throws EmptyQueueException {
+        ListQueue<Integer> numbers = new ListQueue<>();
+        while (input.hasNext()) {
+            int numberRead = input.nextInt();
+            while (! numbers.isEmpty() && numberRead > numbers.peek() + n) {
+                numbers.dequeue();
+            }
+
+            if (! numbers.isEmpty() && numberRead == numbers.peek() + n) {
+                printPairs(numbers.dequeue(), numberRead);
+            }
+            numbers.enqueue(numberRead);
+        }
+    }
 
     /**
      * A short main for quick testing
      */
     public static void main(String[] args) throws FileNotFoundException, EmptyQueueException {
         // put the right path here
-        String filepath = System.getProperty("user.dir") + "\\src\\ads\\lab2\\part3\\big-file.txt";
+        String filepath = System.getProperty("user.dir") + "\\src\\ads\\lab2\\part3\\little-file.txt";
         Scanner input = new Scanner(new File(filepath));
-        //showPairs(1273, input);
+        showPairs(3, input);
         input.close();
     }
 
