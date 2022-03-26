@@ -336,19 +336,28 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> imple
 		 */
 		BSTiterator(BinaryNode<AnyType> n) {
             stack = new Stack<>();
-            createStack(n);
+            fillStack(n);
 		}
 
-        private void createStack(BinaryNode<AnyType> t) {
+        // Recursive version
+        /*
+        private void fillStack(BinaryNode<AnyType> t) {
             if (t == null) {
                 return;
             }
 
             stack.push(t);
-            createStack(t.left);
-
-
+            fillStack(t.left);
         }
+        */
+
+        // Iterative version
+        private void fillStack(BinaryNode<AnyType> t) {
+            for (BinaryNode<AnyType> tree = t; tree != null; tree = tree.left) {
+                stack.push(tree);
+            }
+        }
+
 		/**
 		 * Check if there are more elements in the
 		 * iterator
@@ -363,7 +372,7 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> imple
 		 */
 		public AnyType next() {
 			BinaryNode<AnyType> nextNode = stack.pop();
-            createStack(nextNode.right);
+            fillStack(nextNode.right);
             return nextNode.element;
 		}
 		

@@ -45,7 +45,7 @@ public class RankedBST<AnyType extends Comparable<? super AnyType>> {
      * if x is in the tree, 0 otherwise
      */
     public int rank(AnyType x) {
-    	return rank(root, x);
+        return rank(root, x);
     }
     
     private int rank(BinaryNode<AnyType> t, AnyType x) {
@@ -56,9 +56,13 @@ public class RankedBST<AnyType extends Comparable<? super AnyType>> {
         int cmp = t.element.compareTo(x);
 
         if (cmp == 0) {
-            return t.sizeOfLeft;
+            return t.sizeOfLeft + 1;
         } else if (cmp < 0) {
-            return rank(t.right, x);
+            int value = rank(t.right, x);
+            if (value == 0) {
+                return 0;
+            }
+            return value + t.sizeOfLeft + 1;
         } else {
             return rank(t.left, x);
         }
@@ -73,11 +77,22 @@ public class RankedBST<AnyType extends Comparable<? super AnyType>> {
      * if such element exists, null otherwise
      */
     public AnyType element(int r) {
-    	return null;
+    	return element(root, r);
     }
     
     private AnyType element(BinaryNode<AnyType> t, int r) {
-    	return null;
+    	if (t == null) {
+            return null;
+        }
+
+        int cmp = t.sizeOfLeft + 1 - r;
+
+        if (cmp == 0) {
+            return t.element;
+        } else if (cmp > 0) {
+            return element(t.left, r);
+        } else
+            return element(t.right, r - t.sizeOfLeft - 1);
     }
 
     /////////////// contains
@@ -131,7 +146,7 @@ public class RankedBST<AnyType extends Comparable<? super AnyType>> {
      */
     private BinaryNode<AnyType> insert(AnyType x, BinaryNode<AnyType> t ) {
         if (t == null) {
-            return new BinarySearchTree.BinaryNode<>(x);
+            return new BinaryNode<>(x);
         }
 
         int cmp = t.element.compareTo(x);
@@ -139,6 +154,7 @@ public class RankedBST<AnyType extends Comparable<? super AnyType>> {
         if (cmp < 0) {
             t.right = insert(x, t.right);
         } else if (cmp > 0) {
+            t.sizeOfLeft++;
             t.left = insert(x, t.left);
         } else {
             return t;
@@ -186,15 +202,17 @@ public class RankedBST<AnyType extends Comparable<? super AnyType>> {
         } else if (cmp < 0) {
             t.right = remove(x, t.right);
         } else {
+            t.sizeOfLeft--;
             t.left = remove(x, t.left);
         }
         return t;
     }
 
+    /////////////// findMax
+
     /**
-     * Internal method to find the smallest item in a subtree.
-     * @param t the node that roots the subtree.
-     * @return node containing the smallest item.
+     * Find the largest item in the tree.
+     * @return the largest item of null if empty.
      */
     public AnyType findMax( ) throws EmptyTreeException {
         BinaryNode<AnyType> tree = findMax(root);
@@ -205,6 +223,11 @@ public class RankedBST<AnyType extends Comparable<? super AnyType>> {
         return tree.element;
     }
 
+    /**
+     * Internal method to find the smallest item in a subtree.
+     * @param t the node that roots the subtree.
+     * @return node containing the smallest item.
+     */
     private BinaryNode<AnyType> findMax(BinaryNode<AnyType> t ) {
         if (t == null) {
             return null;
@@ -293,7 +316,11 @@ public class RankedBST<AnyType extends Comparable<? super AnyType>> {
     	for ( Integer n : list )
     		bst.insert(n);
     	bst.display();
-    	System.out.println("Rank of 60: " + bst.rank(60));
-    	System.out.println("Element of rank 6: " + bst.element(6));
+        System.out.println("Rank of 60: " + bst.rank(60));
+        System.out.println("Element of rank 6: " + bst.element(6));
+
+//        System.out.println(bst.element(3));
+//        bst.insert(35);
+//        System.out.println(bst.element(7));
     }
 }
