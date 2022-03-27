@@ -1,6 +1,9 @@
 package ads.lab5;
 
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * A class for binary heap implementation
@@ -110,13 +113,25 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 	 * Complexity: O(log(size))
 	 */
 	private void percolateDown(int n) {
-		int left = left(n);
-		int right = right(n);
+		if (n <= (size - 1) / 2) {
+			int left = left(n);
+			int right = right(n);
 
-		int min = (A[left].compareTo(A[right]) < 0) ? left : right;
+			if (left >= size && right >= size) {
+				return;
+			}
 
-		if (A[n].compareTo(A[min]) > 0) {
-			swap(n, min);
+			int min;
+			if (right >= size) {
+				min = left;
+			} else {
+				min = (A[left].compareTo(A[right]) < 0) ? left : right;
+			}
+
+			if (A[n].compareTo(A[min]) > 0) {
+				swap(n, min);
+				percolateDown(min);
+			}
 		}
 	}
 		
@@ -127,7 +142,7 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 	private void percolateUp(int n) {
 		int parentElem = parent(n);
 		if (parentElem >= 0) {
-			if (A[parent(n)].compareTo(A[n]) > 0) {
+			if (A[parentElem].compareTo(A[n]) > 0) {
 				swap(n, parentElem);
 				percolateUp(parentElem);
 			}
@@ -140,7 +155,9 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 	 * Complexity: O(size)
 	 */
 	private void buildHeap() {
-
+		for (int i = (size-1)/2; i >= 0; i--) {
+			percolateDown(i);
+		}
 	}
 	
 	///////////// Public methods
@@ -167,7 +184,10 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 	 * Complexity: THETA(1)
 	 */
 	public AnyType extreme() throws EmptyHeapException {
-		return null;
+		if (isEmpty()) {
+			throw new EmptyHeapException();
+		}
+		return A[0];
 	}
 	
 	/**
@@ -175,7 +195,14 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 	 * Complexity: O(log(size))
 	 */
 	public AnyType deleteExtreme() throws EmptyHeapException {
-		return null;
+		if (isEmpty()) {
+			throw new EmptyHeapException();
+		}
+		AnyType value = A[0];
+		swap(0, size-1);
+		percolateDown(0);
+		size--;
+		return value;
 	}
 	
 	/**
@@ -186,6 +213,7 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 		if (size == A.length) {
 			throw new FullHeapException();
 		}
+		A[size] = e;
 		percolateUp(size++);
 	}
 	
@@ -196,7 +224,14 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 	 * Complexity: O(size)
 	 */
 	public void delete(AnyType e) {
-
+		for (int i = 0; i < size; i++) {
+			if (A[i].equals(e)) {
+				swap(i, --size);
+				percolateDown(i);
+				percolateUp(i);
+				break;
+			}
+		}
 	}
 	
 	/**
@@ -204,6 +239,51 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 	 * Complexity: O(size)
 	 */	
 	public void deleteAll(AnyType e) {
+		for (int i = 0; i < size; i++) {
+			if (A[i].equals(e)) {
+				int j;
+				for (j = --size; j > i && A[j].equals(e); j--) {
+					size--;
+				}
+				swap(i, j);
+			}
+		}
 
+		for (int i = 0; i < size; i ++) {
+			percolateDown(i);
+			percolateUp(i);
+		}
+	}
+
+	//toStringAsTab
+	public String toStringAsTab() {
+		if (size == 0) return "[]";
+		String res = "[";
+		int i = 0;
+		while (i< size) {
+			res = res +A[i]+", ";
+			i++;
+		}
+		return res.substring(0,res.length()-2)+"]";
+	}
+
+	////////////////////////////////////////////////////
+	// Convenience methods to build a list of integer from a string
+	////////////////////////////////////////////////////
+	private static List<Integer> read(String inputString) {
+		List<Integer> list = new LinkedList<Integer>();
+		Scanner input = new Scanner(inputString).useDelimiter("\\,\\s*");
+		while ( input.hasNextInt() )
+			list.add(input.nextInt());
+		input.close();
+		return list;
+	}
+
+	public static void main(String[] args) {
+
+		BinaryHeap<Integer> bh2 = new BinaryHeap<>(new Integer[]{1, 1, 1, 1, 1, 1});
+		System.out.println(bh2.toStringAsTab());
+		bh2.deleteAll(1);
+		System.out.println(bh2.toStringAsTab());
 	}
 }
