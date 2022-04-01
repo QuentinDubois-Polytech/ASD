@@ -1,16 +1,13 @@
 package ads.lab5;
 
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * A class for binary heap implementation
  */
 public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 	
-	private AnyType[] A; // to store the heap
+	private final AnyType[] A; // to store the heap
 	private int size;    // the number of elements in the heap
 	
 	// comparator to choose
@@ -107,7 +104,6 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 	private int parent(int n) {
 		return (n - 1)/2;
 	}
-	
 	/**
 	 * Percolate down the element à node number n
 	 * Complexity: O(log(size))
@@ -125,10 +121,10 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 			if (right >= size) {
 				min = left;
 			} else {
-				min = (A[left].compareTo(A[right]) < 0) ? left : right;
+				min = (c.compare(A[left], A[right]) < 0) ? left : right;
 			}
 
-			if (A[n].compareTo(A[min]) > 0) {
+			if (c.compare(A[n], A[min]) > 0) {
 				swap(n, min);
 				percolateDown(min);
 			}
@@ -142,7 +138,7 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 	private void percolateUp(int n) {
 		int parentElem = parent(n);
 		if (parentElem >= 0) {
-			if (A[parentElem].compareTo(A[n]) > 0) {
+			if (c.compare(A[parentElem], A[n]) > 0) {
 				swap(n, parentElem);
 				percolateUp(parentElem);
 			}
@@ -155,7 +151,7 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 	 * Complexity: O(size)
 	 */
 	private void buildHeap() {
-		for (int i = (size-1)/2; i >= 0; i--) {
+		for (int i = parent(size); i >= 0; i--) {
 			percolateDown(i);
 		}
 	}
@@ -199,9 +195,8 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 			throw new EmptyHeapException();
 		}
 		AnyType value = A[0];
-		swap(0, size-1);
+		A[0] = A[--size];
 		percolateDown(0);
-		size--;
 		return value;
 	}
 	
@@ -249,7 +244,7 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 			}
 		}
 
-		for (int i = 0; i < size; i ++) {
+		for (int i = parent(size); i >= 0; i--) {
 			percolateDown(i);
 			percolateUp(i);
 		}
@@ -258,10 +253,10 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 	//toStringAsTab
 	public String toStringAsTab() {
 		if (size == 0) return "[]";
-		String res = "[";
+		StringBuilder res = new StringBuilder("[");
 		int i = 0;
 		while (i< size) {
-			res = res +A[i]+", ";
+			res.append(A[i]).append(", ");
 			i++;
 		}
 		return res.substring(0,res.length()-2)+"]";
@@ -271,19 +266,11 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 	// Convenience methods to build a list of integer from a string
 	////////////////////////////////////////////////////
 	private static List<Integer> read(String inputString) {
-		List<Integer> list = new LinkedList<Integer>();
-		Scanner input = new Scanner(inputString).useDelimiter("\\,\\s*");
+		List<Integer> list = new LinkedList<>();
+		Scanner input = new Scanner(inputString).useDelimiter(",\\s*");
 		while ( input.hasNextInt() )
 			list.add(input.nextInt());
 		input.close();
 		return list;
-	}
-
-	public static void main(String[] args) {
-
-		BinaryHeap<Integer> bh2 = new BinaryHeap<>(new Integer[]{1, 1, 1, 1, 1, 1});
-		System.out.println(bh2.toStringAsTab());
-		bh2.deleteAll(1);
-		System.out.println(bh2.toStringAsTab());
 	}
 }
