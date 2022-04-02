@@ -109,11 +109,11 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 	 * Complexity: O(log(size))
 	 */
 	private void percolateDown(int n) {
-		if (n <= (size - 1) / 2) {
+		if (n <= parent(size)) {
 			int left = left(n);
 			int right = right(n);
 
-			if (left >= size && right >= size) {
+			if (left == size) {
 				return;
 			}
 
@@ -221,7 +221,7 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 	public void delete(AnyType e) {
 		for (int i = 0; i < size; i++) {
 			if (A[i].equals(e)) {
-				swap(i, --size);
+				A[i] = A[--size];
 				percolateDown(i);
 				percolateUp(i);
 				break;
@@ -240,14 +240,10 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 				for (j = --size; j > i && A[j].equals(e); j--) {
 					size--;
 				}
-				swap(i, j);
+				A[i] = A[j];
 			}
 		}
-
-		for (int i = parent(size); i >= 0; i--) {
-			percolateDown(i);
-			percolateUp(i);
-		}
+		buildHeap();
 	}
 
 	//toStringAsTab
