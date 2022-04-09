@@ -7,7 +7,7 @@ import java.util.Arrays;
  */
 public class QuickSort {
 
-    private static final int CUTOFF = 2;
+    private static final int CUTOFF = 10;
 
     /**
      * Sort the array in place using the quicksort algorithm
@@ -21,9 +21,9 @@ public class QuickSort {
      */
     private static <AnyType extends Comparable<AnyType>> void sort(AnyType[] array, int lo, int hi) {
         int cmp = hi - lo;
-        if (cmp < 1) {
-            return;
-        } else {
+        if (cmp >= 1 && cmp < CUTOFF) {
+            insertion(array, lo, hi);
+        } else if (cmp >= CUTOFF) {
             int indexPivot = partition(array, lo, hi);
             sort(array, lo, indexPivot - 1);
             sort(array, indexPivot + 1, hi);
