@@ -196,7 +196,8 @@ public class BinaryHeap<AnyType extends Comparable<? super AnyType>> {
 		}
 		AnyType value = A[0];
 		A[0] = A[--size];
-		percolateDown(0);
+		if ( size > 0 )
+			percolateDown(0);
 		return value;
 	}
 	
