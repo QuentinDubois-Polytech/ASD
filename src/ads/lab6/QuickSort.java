@@ -68,9 +68,8 @@ public class QuickSort {
 			return hi;
 		} else if ((cmpMidHigh > 0) ^ (array[mid].compareTo(array[lo]) > 0)) {
 			return mid;
-		} else {
-			return lo;
-		}
+		} 
+        return lo;
 	}
 
     /**
