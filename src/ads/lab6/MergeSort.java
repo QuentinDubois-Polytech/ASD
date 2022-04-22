@@ -32,6 +32,7 @@ public class MergeSort {
 			sort(array, tmp, lo, middle);
 			sort(array, tmp, middle + 1, hi);
 			merge(array, tmp, lo, middle, hi);
+			transfer(tmp, array, lo, hi);
 		}
 	}
 	
@@ -46,18 +47,16 @@ public class MergeSort {
 		int j = mid + 1;
 		int k = lo;
 
-		transfer(array, tmp, lo, hi);
-
 		while (i <= mid && j <= hi) {
-			array[k++] = (tmp[i].compareTo(tmp[j]) < 0) ? tmp[i++] : tmp[j++];
+			tmp[k++] = (array[i].compareTo(array[j]) < 0) ? array[i++] : array[j++];
 		}
 
 		while (i <= mid) {
-			array[k++] = tmp[i++];
+			tmp[k++] = array[i++];
 		}
 
 		while (j <= hi) {
-			array[k++] = tmp[j++];
+			tmp[k++] = array[j++];
 		}
 	}
 	

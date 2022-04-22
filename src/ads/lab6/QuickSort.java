@@ -43,9 +43,9 @@ public class QuickSort {
         int i = lo + 1;
         int j = hi;
         while (i <= j) {
-            if (array[j].compareTo(array[lo]) > 0) {
+            if (array[j].compareTo(array[lo]) >= 0) {
                 j--;
-            } else if (array[i].compareTo(array[lo]) <= 0) {
+            } else if (array[i].compareTo(array[lo]) <0) {
                 i++;
             } else {
                 swap(array, i++, j--);
