@@ -63,10 +63,10 @@ public class QuickSort {
      * Return the index of the median of { array[lo], array[mid], array[hi] }
      */
 	private static <AnyType extends Comparable<AnyType>> int median(AnyType[] array, int lo, int mid, int hi) {
-		int cmpMidHigh = array[mid].compareTo(array[hi]);
-		if ((cmpMidHigh < 0) ^ (array[hi].compareTo(array[lo]) > 0)) {
+		boolean midLesserThanHi = array[mid].compareTo(array[hi]) < 0;
+		if (midLesserThanHi ^ (array[hi].compareTo(array[lo]) > 0)) {
 			return hi;
-		} else if ((cmpMidHigh > 0) ^ (array[mid].compareTo(array[lo]) > 0)) {
+		} else if (!midLesserThanHi ^ (array[mid].compareTo(array[lo]) > 0)) {
 			return mid;
 		} 
         return lo;
