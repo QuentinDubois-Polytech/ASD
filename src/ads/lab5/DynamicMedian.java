@@ -32,17 +32,15 @@ public class DynamicMedian<AnyType extends Comparable<? super AnyType>> {
      * Complexity: O(log(size))
      */
     public void add(AnyType e) throws EmptyHeapException, FullHeapException {
-        if (size() == 0) {
+        if ( less.isEmpty() || e.compareTo(less.extreme()) <= 0 ) {
             less.add(e);
-            return;
+            if ( less.size() > greater.size() + 1 )
+                greater.add(less.deleteExtreme());
         }
-
-        if (findMedian().compareTo(e) > 0) {
-            less.add(e);
-            lessRebalancing();
-        } else {
+        else {
             greater.add(e);
-            greaterRebalancing();
+            if ( less.size() < greater.size() )
+                less.add(greater.deleteExtreme());
         }
     }
 
@@ -59,23 +57,9 @@ public class DynamicMedian<AnyType extends Comparable<? super AnyType>> {
      * Complexity: O(log(size))
      */
     public AnyType deleteMedian() throws EmptyHeapException, FullHeapException {
-        AnyType median = findMedian();
-        less.deleteExtreme();
-        greaterRebalancing();
+        AnyType median = less.deleteExtreme();
+        if ( less.size() < greater.size() )
+            less.add(greater.deleteExtreme());
         return median;
-    }
-
-    private void greaterRebalancing() throws EmptyHeapException, FullHeapException {
-        if (less.size() - greater.size() == -1) {
-            AnyType value = greater.extreme();
-            greater.deleteExtreme();
-            less.add(value);
-        }
-    }
-
-    private void lessRebalancing() throws EmptyHeapException, FullHeapException {
-        if (less.size() - greater.size() == 2) {
-            greater.add(deleteMedian());
-        }
     }
 }

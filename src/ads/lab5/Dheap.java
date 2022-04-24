@@ -83,7 +83,7 @@ public class Dheap<AnyType extends Comparable<? super AnyType>> {
     }
 
     /**
-     * Return the number of the left
+     * Return the number of the leftmost node child
      * node of node number n.
      * Complexity: THETA(1)
      */
@@ -92,7 +92,7 @@ public class Dheap<AnyType extends Comparable<? super AnyType>> {
     }
 
     /**
-     * Return the number of the right
+     * Return the number of the rightmost node child
      * node of node number n.
      * Complexity: THETA(1)
      */
@@ -114,27 +114,16 @@ public class Dheap<AnyType extends Comparable<? super AnyType>> {
      * Complexity: O(log(size))
      */
     private void percolateDown(int n) {
-        if (n <= parent(size)) {
-            int right = right(n);
-            boolean find = false;
-            int min = 0;
-            for (int i = left(n); i <= right && i < size; i++) {
-                if (c.compare(A[n], A[i]) > 0) {
-                    if (!find) {
-                        min = i;
-                        find = true;
-                    } else {
-                        if (c.compare(A[i], A[min]) < 0) {
-                            min = i;
-                        }
-                    }
-                }
+        int k = n;
+        for ( int i = left(n); i < size && i <= right(n); i++ ) {
+            if (c.compare(A[i], A[k]) > 0) {
+                k = i;
             }
+        }
 
-            if (find) {
-                swap(n, min);
-                percolateDown(min);
-            }
+        if ( k != n ) {
+            swap(k,n);
+            percolateDown(k);
         }
     }
 
@@ -143,13 +132,13 @@ public class Dheap<AnyType extends Comparable<? super AnyType>> {
      * Complexity: O(log(size))
      */
     private void percolateUp(int n) {
-        int parentElem = parent(n);
-        if (parentElem >= 0) {
-            if (c.compare(A[parentElem], A[n]) > 0) {
-                swap(n, parentElem);
-                percolateUp(parentElem);
-            }
+        int parentElem;
+        AnyType e = A[n];
+        while (n > 0 && c.compare(e, A[parentElem = parent(n)]) > 0) {
+            A[n] = A[parentElem];
+            n = parentElem;
         }
+        A[n] = e;
     }
 
     /**
@@ -158,7 +147,7 @@ public class Dheap<AnyType extends Comparable<? super AnyType>> {
      * Complexity: O(size)
      */
     private void buildHeap() {
-        for (int i = parent(size); i >= 0; i--) {
+        for (int i = parent(size-1); i >= 0; i--) {
             percolateDown(i);
         }
     }
@@ -187,7 +176,7 @@ public class Dheap<AnyType extends Comparable<? super AnyType>> {
      * Complexity: THETA(1)
      */
     public AnyType extreme() throws EmptyHeapException {
-        if (isEmpty()) {
+        if (size == 0) {
             throw new EmptyHeapException();
         }
         return A[0];
@@ -198,12 +187,14 @@ public class Dheap<AnyType extends Comparable<? super AnyType>> {
      * Complexity: O(log(size))
      */
     public AnyType deleteExtreme() throws EmptyHeapException {
-        if (isEmpty()) {
+        if (size == 0) {
             throw new EmptyHeapException();
         }
         AnyType value = A[0];
         A[0] = A[--size];
-        percolateDown(0);
+        if (size > 0) {
+            percolateDown(0);
+        }
         return value;
     }
 
@@ -241,13 +232,12 @@ public class Dheap<AnyType extends Comparable<? super AnyType>> {
      * Complexity: O(size)
      */
     public void deleteAll(AnyType e) {
-        for (int i = 0; i < size; i++) {
+        int i = 0;
+        while (i < size) {
             if (A[i].equals(e)) {
-                int j;
-                for (j = --size; j > i && A[j].equals(e); j--) {
-                    size--;
-                }
-                A[i] = A[j];
+                A[i] = A[--size];
+            } else {
+                i++;
             }
         }
         buildHeap();
