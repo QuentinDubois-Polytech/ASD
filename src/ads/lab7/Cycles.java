@@ -19,14 +19,11 @@ public class Cycles {
 	 * false otherwise
 	 */
 	public static boolean hasCycle(UnDiGraph G) {
-		visited = new HashSet<>();
 		Cycles.G = G;
-		for (Vertex u : G.vertices()) {
-			for (Vertex v : G.vertices()) {
-				if (hasCycle(u, v)) {
-					return true;
-				}
-				visited.clear();
+		for (Vertex v : G.vertices()) {
+			visited = new HashSet<>();
+			if (hasCycle(v, null)) {
+				return true;
 			}
 		}
 		return false;
@@ -46,7 +43,9 @@ public class Cycles {
 		visited.add(u);
 		for (Vertex v : G.adjacents(u)) {
 			if (v != from) {
-				return hasCycle(v, u);
+				if (hasCycle(v, u)) {
+					return true;
+				}
 			}
 		}
 
@@ -64,6 +63,13 @@ public class Cycles {
 	 * false otherwise
 	 */
 	public static boolean hasCycle(DiGraph G) {
+		vertexStatus = new HashMap<>();
+		Cycles.G = G;
+		for (Vertex v : G.vertices()) {
+			if (hasCycle(v)) {
+				return true;
+			}
+		}
 		return false;
 	}
 	
@@ -79,10 +85,12 @@ public class Cycles {
 
 		setStatus(u, Status.InProgress);
 		for (Vertex v : G.adjacents(u)) {
-			return hasCycle(v);
+			if (hasCycle(v)) {
+				return true;
+			}
 		}
-		setStatus(u, Status.Completed);
 
+		setStatus(u, Status.Completed);
 		return false;
 	}
 	
