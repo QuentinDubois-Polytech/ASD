@@ -73,7 +73,7 @@ public class Cycles {
 	 * Precondition: vertex 'u' is 'UnDiscovered'
 	 */
 	private static boolean hasCycle(Vertex u) {
-		if (status(u).equals(Status.Completed)) {
+		if (status(u).equals(Status.InProgress)) {
 			return true;
 		}
 
@@ -81,7 +81,6 @@ public class Cycles {
 		for (Vertex v : G.adjacents(u)) {
 			return hasCycle(v);
 		}
-
 		setStatus(u, Status.Completed);
 
 		return false;
