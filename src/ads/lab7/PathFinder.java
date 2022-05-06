@@ -10,7 +10,7 @@ public class PathFinder {
 	
 	private static Graph G;
 	
-	private static Set<Vertex> visited;
+	private static Set<Vertex> visited = new HashSet<>();
 	
 	/**
 	 * Returns a path as from vertex 'u' to vertex 'v' in the graph 'G'
@@ -29,13 +29,28 @@ public class PathFinder {
 	 * returns false
 	 */
 	private static boolean findPath(Vertex u, Vertex v, List<Vertex> path) {
+		if (u == v) {
+			path.add(0, v);
+			return true;
+		}
+
+		visited.add(u);
+		for (Vertex w : G.adjacents(u)) {
+			if (!visited.contains(w) && findPath(w, v, path)) {
+				path.add(0, u);
+				return true;
+			}
+		}
+
 		return false;
 	}
 	
 	public static void main(String[] s) {
-		DiGraph G = GraphReader.D3;
-		System.out.println(G);
-		
-		System.out.println(findPath(G,G.getVertex("F"),G.getVertex("E")));
+
+		UnDiGraph G = GraphReader.U3;
+		PathFinder.G = G;
+		List<Vertex> path = new LinkedList<>();
+		boolean b = findPath(G.getVertex("H"),G.getVertex("F"), path);
+		System.out.println(b+" : "+path);
 	}
 }
