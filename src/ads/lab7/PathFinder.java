@@ -10,15 +10,17 @@ public class PathFinder {
 	
 	private static Graph G;
 	
-	private static Set<Vertex> visited = new HashSet<>();
+	private static Set<Vertex> visited;
 	
 	/**
 	 * Returns a path as from vertex 'u' to vertex 'v' in the graph 'G'
 	 * as a list of vertices if such a path exists, the empty list otherwise
 	 */
 	public static List<Vertex> findPath(Graph G, Vertex u, Vertex v) {
-		List<Vertex> path = new LinkedList<Vertex>();
-
+		PathFinder.G = G;
+		PathFinder.visited = new HashSet<>();
+		List<Vertex> path = new LinkedList<>();
+		findPath(u, v, path);
 		return path;
 	}
 	
