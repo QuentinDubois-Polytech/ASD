@@ -25,6 +25,18 @@ public class GraphReader {
 	public static DiGraph D1 = diGraph("A E B D B F C E D F F C F E G A G B G C");
 	public static DiGraph D2 = diGraph("A C A E B D D F D G E C F B");
 	public static DiGraph D3 = diGraph("A C B D C E C G D A D F E A F B");
+	public static DiGraph DD1 = diGraph("A D C A C E D B E A E D");
+	public static DiGraph DD2 = diGraph("A D A F C A C E D B E D F B");
+	public static DiGraph DD3 = diGraph("A C A E B D B F D F D G E C");
+	public static DiGraph DD4 = diGraph("A C A E B D C E C G D A F B F D");
+	public static UnDiGraph C1 = unDiGraph("A C 1.0 A D 5.0 A E 2.0 B D 3.0 C E 6.0 D E 4.0");
+	public static UnDiGraph C2 = unDiGraph("A D 8.0 A E 9.0 A F 2.0 B D 1.0 B E 5.0 C E 6.0 C F 7.0 D E 3.0 E F 4.0");
+	public static UnDiGraph C3 = unDiGraph("A D 9.0 A F 2.0 A G 8.0 B D 4.0 B E 11.0 B G 10.0 C E 6.0 C F 7.0 C G 12.0 D G 3.0 E G 5.0 F G 1.0");
+	public static UnDiGraph C4 = unDiGraph("A C 4.0 A F 8.0 B E 2.0 B F 7.0 B H 6.0 C E 8.0 C F 11.0 D E 4.0 D G 10.0 D H 2.0 D I 14.0 E I 7.0 F H 1.0 G I 9.0");
+	public static UnDiGraph NC1 = unDiGraph("A C 1.0 A E 2.0 B D 4.0 C E 6.0");
+	public static UnDiGraph NC2 = unDiGraph("A D 8.0 A E 9.0 B D 1.0 B E 5.0 C F 7.0 C H 6.0 D E 3.0 F G 2.0 F H 4.0 G H 5.0");
+	public static UnDiGraph NC3 = unDiGraph("A D 9.0 A F 2.0 A G 8.0 B C 5.0 B E 11.0 C E 6.0 D G 3.0 F G 1.0");
+	public static UnDiGraph NC4 = unDiGraph("A C 4.0 A F 8.0 B H 6.0 C F 11.0 D E 4.0 D G 10.0 D I 14.0 E I 7.0 G I 9.0");	
 	
 	/**
 	 * Returns an UnDiGraph build from the String
