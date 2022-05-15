@@ -31,16 +31,18 @@ public class PathFinder {
 	 * returns false
 	 */
 	private static boolean findPath(Vertex u, Vertex v, List<Vertex> path) {
+		visited.add(u);
 		if (u == v) {
-			path.add(0, v);
+			path.add(0, u);
 			return true;
 		}
 
-		visited.add(u);
 		for (Vertex w : G.adjacents(u)) {
-			if (!visited.contains(w) && findPath(w, v, path)) {
-				path.add(0, u);
-				return true;
+			if (!visited.contains(w)) {
+				if (findPath(w, v, path)) {
+					path.add(0, u);
+					return true;
+				}
 			}
 		}
 

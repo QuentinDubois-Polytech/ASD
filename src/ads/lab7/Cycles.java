@@ -20,10 +20,13 @@ public class Cycles {
 	 */
 	public static boolean hasCycle(UnDiGraph G) {
 		Cycles.G = G;
+		visited = new HashSet<>();
+
 		for (Vertex v : G.vertices()) {
-			visited = new HashSet<>();
-			if (hasCycle(v, null)) {
-				return true;
+			if (! visited.contains(v)) {
+				if (hasCycle(v, null)) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -36,16 +39,16 @@ public class Cycles {
 	 * not visited
 	 */
 	private static boolean hasCycle(Vertex u, Vertex from) {
-		if (visited.contains(u)) {
-			return true;
-		}
-
 		visited.add(u);
 		for (Vertex v : G.adjacents(u)) {
-			if (v != from) {
-				if (hasCycle(v, u)) {
-					return true;
+			if (! visited.contains(v)) {
+				if (v != from) {
+					if (hasCycle(v, u)) {
+						return true;
+					}
 				}
+			} else if (v != from) {
+				return true;
 			}
 		}
 
@@ -66,8 +69,10 @@ public class Cycles {
 		vertexStatus = new HashMap<>();
 		Cycles.G = G;
 		for (Vertex v : G.vertices()) {
-			if (hasCycle(v)) {
-				return true;
+			if (status(v).equals(Status.UnDiscovered)) {
+				if (hasCycle(v)) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -79,13 +84,13 @@ public class Cycles {
 	 * Precondition: vertex 'u' is 'UnDiscovered'
 	 */
 	private static boolean hasCycle(Vertex u) {
-		if (status(u).equals(Status.InProgress)) {
-			return true;
-		}
-
 		setStatus(u, Status.InProgress);
 		for (Vertex v : G.adjacents(u)) {
-			if (hasCycle(v)) {
+			if (status(v).equals(Status.UnDiscovered)) {
+				if (hasCycle(v)) {
+					return true;
+				}
+			} else if (status(v).equals(Status.InProgress)) {
 				return true;
 			}
 		}
